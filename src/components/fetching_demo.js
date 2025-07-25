@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLazyGetProductQuery } from "../features/slice";
+import { useLazyGetAllProductsQuery, useLazyGetProductQuery } from "../features/slice";
 
 // demo implementation of an iife //
 (() => {
@@ -10,18 +10,22 @@ import { useLazyGetProductQuery } from "../features/slice";
 
 // Component name must start with uppercase
 export const Fetching_demo = () => {
-  const [getProduct, { data, isLoading, error }] = useLazyGetProductQuery();
+  const [getProduct, { data:singledata, isLoading, error }] = useLazyGetProductQuery();
+  const [getAllProducts, { data:completedata }] = useLazyGetAllProductsQuery();
+
   const [search, setSearch] = useState("");
 
   const handleSearch = () => {
-    if (search.trim()) {
+    if (search.trim()!=='All') {
       getProduct(search);
+    }else{
+      getAllProducts(search)
     }
   };
 
-//   useEffect(() => {
-//     console.log('Checking Prod Data:', data);
-//   }, [data]);
+  useEffect(() => {
+    console.log('Checking Prod Data:', completedata);
+  }, [completedata]);
 
   if (isLoading) return <h1>Loading...</h1>;
   if (error) return <h1>Error: {error.message}</h1>;
@@ -36,12 +40,12 @@ export const Fetching_demo = () => {
       />
       <button onClick={handleSearch}>Search</button>
       
-      {data && (
+      {singledata && (
         <div>
           <h3>Search Results:</h3>
-          <p>Total products found: {data.total}</p>
+          <p>Total products found: {singledata.total}</p>
           <div>
-            {data.map(({ id, title, price, thumbnail }) => (
+            {singledata.map(({ id, title, price, thumbnail }) => (
               <div key={id} style={{ border: '1px solid #ccc', margin: '10px', padding: '10px' }}>
                 <h4>{title}</h4>
                 <p>Price: ${price}</p>
@@ -52,8 +56,23 @@ export const Fetching_demo = () => {
         </div>
       )}
       
-      {data &&data?.length===0 &&(
+      {singledata &&singledata?.length===0 &&(
         <div>No products found for "{search}"</div>
+      )}
+      {completedata&&(
+        <div>
+          <h3>Search Results:</h3>
+          <p>Total products found: {completedata.total}</p>
+          <div>
+            {completedata.map(({ id, title, price, thumbnail }) => (
+              <div key={id} style={{ border: '1px solid #ccc', margin: '10px', padding: '10px' }}>
+                <h4>{title}</h4>
+                <p>Price: ${price}</p>
+                {thumbnail && <img src={thumbnail} alt={title} width="100" />}
+              </div>
+            ))}
+          </div>
+        </div>
       )}
     </>
   );

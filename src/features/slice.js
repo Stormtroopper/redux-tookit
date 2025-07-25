@@ -6,7 +6,10 @@ export const productApi = createApi({
   endpoints: (builder) => ({
     getAllProducts: builder.query({
       query: () => "products",
-      
+      transformResponse:res=>{
+        console.log(res?.products);
+        return  res?.products||[];
+      } 
     }),
     getProduct: builder.query({
       query: (product) => `product/search?q=${product}`,

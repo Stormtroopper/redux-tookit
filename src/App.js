@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { ApiProvider } from '@reduxjs/toolkit/query/react';
 import { Fetching_demo } from './components/fetching_demo';
