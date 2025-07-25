@@ -16,7 +16,7 @@ export const Fetching_demo = () => {
   const [search, setSearch] = useState("");
 
   const handleSearch = () => {
-    if (search.trim()!=='All') {
+    if (search.toUpperCase().trim()!=='All') {
       getProduct(search);
     }else{
       getAllProducts(search)
