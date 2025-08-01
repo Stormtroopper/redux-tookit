@@ -27,3 +27,11 @@ await new Promise((resolve)=>setTimeout(resolve,1000));
 ];
 return mockTrackers;
 })
+// Create the async thunk with an endpoint
+// export const fetchUserById = createAsyncThunk(
+//   'users/fetchById',
+//   async (userId) => {
+//     const response = await fetch(`/api/users/${userId}`)
+//     return response.json()
+//   }
+// )
